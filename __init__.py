@@ -4,8 +4,8 @@ import numpy as np
 from scipy.stats import multivariate_normal
 
 def get_imodel(model):
-    d = {'shift-L0': 0,
-        'shift-L': 1,
+    d = {'shift_L0': 0,
+        'shift_Lvar': 1,
     return d[model]
 
 class shift_priors(Likelihood):
@@ -21,7 +21,7 @@ class shift_priors(Likelihood):
            means = np.array(self.meansL)
            cov = np.array(self.covL)
         else:
-           print('Shift model specified does not exist; Choose 0 for Lambda=0 and 1 for Lambda!=0 model')
+           print('Shift model specified does not exist; Choose shift_L0 for Lambda=0 and shift_Lvar for Lambda!=0 model')
         return multivariate_normal.logpdf(x,means,cov)
 
     def loglkl(self, cosmo, data):
