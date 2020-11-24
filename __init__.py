@@ -13,7 +13,7 @@ class shift_priors(Likelihood):
     # this case, it does not differ, actually, from the __init__ method in
     # Likelihood class.
 
-    def multvar_normal_logpdf(x, means, cov, model):
+    def multvar_normal_logpdf(self, x, model):
         if model == 0:
            means = np.array(self.means)
            cov = np.array(self.cov)
