@@ -1,0 +1,45 @@
+#------Experiments to test (separated with commas)-----
+
+data.experiments=['shift_priors']
+
+#------ Parameter list -------
+
+# data.parameters[class name] = [mean, min, max, 1-sigma, scale, role]
+# - if min max irrelevant, put to None
+# - if fixed, put 1-sigma to 0
+# - if scale irrelevant, put to 1, otherwise to the appropriate factor
+# - role is either 'cosmo', 'nuisance' or 'derived'. You should put the derived
+# parameters at the end, and in case you are using the `-j fast` Cholesky
+# decomposition, you should order your nuisance parameters from slowest to
+# fastest.
+
+# Cosmological parameters list
+
+data.parameters['parameters_smg__1']    = [ 1.5,    0.,  None,   0.5, 1, 'cosmo']
+data.parameters['parameters_smg__2']    = [ 1.3,    0.,  None,   0.5, 1, 'cosmo']
+
+data.cosmo_arguments['expansion_model'] = "wowa_w"
+
+data.parameters['expansion_smg__1']    = [  0.7,  None, None,      0, 1, 'cosmo']
+data.parameters['expansion_smg__2']    = [  -1.,  None, None,   0.06, 1, 'cosmo']
+data.parameters['expansion_smg__3']    = [ -0.5,  None, None,    0.1, 1, 'cosmo']
+
+
+data.cosmo_arguments['gravity_model'] = "propto_H4_2"
+data.cosmo_arguments['Omega_Lambda']  = 0
+data.cosmo_arguments['Omega_fld']     = 0
+data.cosmo_arguments['Omega_smg']     = -1
+data.cosmo_arguments['output_background_smg']     = 2
+
+# Other cosmo parameters (fixed parameters, precision parameters, etc.)
+
+data.cosmo_arguments['sBBN file'] = data.path['cosmo']+'/bbn/sBBN.dat'
+data.cosmo_arguments['k_pivot'] = 0.05
+
+# shift_priors.model = 'shift_Lvar'  # For Lambda!=0
+shift_priors.model = 'shift_L0'	     # For Lambda=0
+
+#------ Mcmc parameters ----
+
+data.N=10
+data.write_step=5
