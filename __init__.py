@@ -15,17 +15,19 @@ class shift_priors(Likelihood):
 
     def multvar_normal_logpdf(self, x, model):
         if model == 0:
-           means = np.array(self.means)
-           cov = np.array(self.cov)
+           means = np.array(self.meansL0)
+           cov = np.array(self.covL0)
         elif model == 1:
-           means = np.array(self.meansL)
-           cov = np.array(self.covL)
+           means = np.array(self.meansLvar)
+           cov = np.array(self.covLvar)
         else:
            print('Shift model specified does not exist; Choose shift_L0 for Lambda=0 and shift_Lvar for Lambda!=0 model')
-        print(-1./2.*(x-mu).T.dot(invS).dot(x-mu))
+
+        det_cov = np.linalg.det(cov)
+        inv_cov = np.linalg.inv(cov)
+        print(-1./2.*(x-means).T.dot(inv_cov).dot(x-means))
         print(np.log(multivariate_normal.pdf(x,means,cov)/multivariate_normal.pdf(means,means,cov)))
-        #return np.log(multivariate_normal.pdf(x,means,cov)/multivariate_normal.pdf(means,means,cov))
-        return -1./2.*(x-mu).T.dot(invS).dot(x-mu)
+        return np.log(multivariate_normal.pdf(x,means,cov)/multivariate_normal.pdf(means,means,cov))
 
     def loglkl(self, cosmo, data):
         # self.model must be in param file
@@ -40,7 +42,7 @@ class shift_priors(Likelihood):
         X1 = aB0
         X2 = m*aB0**(1./6.)
         X3 = w0*m**(1./4.)
-        X4 = wa*(m**2.)
+        X4 = wa*m**2.
         #print("x", (X1,X2,X3,X4))
         
         X = np.array((X1, X2, X3, X4))
